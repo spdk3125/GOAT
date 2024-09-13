@@ -21,256 +21,518 @@ if (isset($_SESSION["username"])) {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap");
+      /* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        :root {
-            --primary: #eeeeee;
-            --secondary: #227c70;
-            --green: #82cd47;
-            --secondary-light: rgb(34, 124, 112, 0.2);
-            --secondary-light-2: rgb(127, 183, 126, 0.1);
-            --white: #fff;
-            --black: #393e46;
-            --shadow: 0px 2px 8px 0px var(--secondary-light);
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
-        }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #333;
+    color: white;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
 
-        body {
-            height: 100vh;
-            width: 100%;
-            background-color: var(--primary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+.navbar-logo {
+    width: 120px;
+    transition: transform 0.5s ease-in-out;
+}
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-            background-color: var(--white);
-            padding: 0 8%;
-            box-shadow: var(--shadow);
-            z-index: 1000;
-        }
+.navbar-logo:hover {
+    transform: scale(1.1);
+}
 
-        .navbar-logo {
-            cursor: pointer;
-            border-radius: 50%;
-            width: 8%;
-            height: 80%;
-        }
+.navbar-list {
+    display: flex;
+    list-style: none;
+}
 
-        .navbar-list {
-            width: 100%;
-            text-align: right;
-            padding-right: 2rem;
-        }
+.navbar-list li {
+    margin-left: 30px;
+    position: relative;
+}
 
-        .navbar-list li {
-            display: inline-block;
-            margin: 0 1rem;
-        }
+.navbar-list li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
 
-        .navbar-list li a {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--black);
-            text-decoration: none;
-        }
+.navbar-list li a:hover {
+    color: #f0a500;
+    transition: 0.3s ease;
+}
 
-        /* Profile dropdown */
-        .profile-dropdown {
-            position: relative;
-            width: fit-content;
-        }
+.profile-dropdown {
+    position: relative;
+}
 
-        .profile-dropdown-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-right: 1rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            width: 150px;
-            border-radius: 50px;
-            color: var(--black);
-            cursor: pointer;
-            border: 1px solid var(--secondary);
-            transition: box-shadow 0.2s ease-in, background-color 0.2s ease-in, border 0.3s;
-        }
+.profile-dropdown-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    padding: 10px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease;
+}
 
-        .profile-dropdown-btn:hover {
-            background-color: var(--secondary-light-2);
-            box-shadow: var(--shadow);
-        }
+.profile-dropdown-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
 
-        .profile-img {
-            position: relative;
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            background-color: var(--secondary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.5rem;
-            font-weight: bold;
-            background-color: var(--secondary);
-        }
+.profile-img {
+    width: 40px;
+    height: 40px;
+    background-color: #555;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
 
-        .profile-dropdown-list {
-            position: absolute;
-            top: 68px;
-            width: 220px;
-            right: 0;
-            background-color: var(--white);
-            border-radius: 10px;
-            max-height: 0;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: max-height 0.5s;
-        }
+.profile-img:hover {
+    transform: rotate(360deg);
+}
 
-        .profile-dropdown-list.active {
-            max-height: 500px;
-        }
+.profile-dropdown-list {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    width: 200px;
+    padding: 10px 0;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
 
-        .profile-dropdown-list-item {
-            padding: 0.5rem 0rem 0.5rem 1rem;
-            transition: background-color 0.2s ease-in, padding-left 0.2s;
-        }
+.profile-dropdown-list.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
 
-        .profile-dropdown-list-item a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--black);
-        }
+.profile-dropdown-list-item {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+}
 
-        .profile-dropdown-list-item a i {
-            margin-right: 0.8rem;
-            font-size: 1.1rem;
-            width: 2.3rem;
-            height: 2.3rem;
-            background-color: var(--secondary);
-            color: var(--white);
-            line-height: 2.3rem;
-            text-align: center;
-            border-radius: 50%;
-            transition: margin-right 0.3s;
-        }
+.profile-dropdown-list-item:hover {
+    background-color: #f0f0f0;
+}
 
-        .profile-dropdown-list-item:hover {
-            padding-left: 1.5rem;
-            background-color: var(--secondary-light);
-        }
+.profile-dropdown-list-item a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+}
 
-        /* Responsive behavior */
-        @media only screen and (max-width: 600px) {
-            .navbar-list {
-                display: none;
-            }
+.profile-dropdown-list-item a i {
+    margin-right: 10px;
+}
 
-            .profile-dropdown {
-                display: block;
-            }
-        }
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+    .navbar-list {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #333;
+        width: 100%;
+    }
 
-        /* Centered Welcome Text */
-        .welcome-text {
-            font-size: 2.2rem;
-            color: var(--black);
-            text-align: center;
-            animation: fadeIn 3s ease-in-out forwards;
-            margin-top: 80px;
-        }
+    .navbar-list li {
+        margin: 10px 0;
+        text-align: center;
+    }
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
+    .navbar-list.active {
+        display: flex;
+    }
+
+    .mobile-toggle {
+        cursor: pointer;
+        font-size: 24px;
+        color: white;
+    }
+}
+
+
+/* Category List */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 1rem;
+}
+
+.category-button {
+    padding: 10px 15px;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.category-button.active {
+    background-color: #333;
+    color: white;
+}
+
+/* Video List */
+.video-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for larger screens */
+    gap: 15px;
+    padding: 1rem;
+}
+
+.video-card {
+    display: block;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: black;
+}
+
+.thumbnail-container {
+    position: relative;
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+}
+
+.duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.video-info {
+    display: flex;
+    padding: 1rem;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.video-details h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.video-details p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Media Queries for Responsiveness */
+
+/* For tablets and smaller devices */
+@media screen and (max-width: 1024px) {
+    .video-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+    }
+
+    .category-list {
+        justify-content: flex-start;
+        overflow-x: scroll;
+        padding: 10px;
+    }
+
+    .category-button {
+        flex: 0 0 auto;
+    }
+}
+
+/* For mobile devices */
+@media screen and (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .video-list {
+        grid-template-columns: 1fr; /* 1 column for mobile */
+    }
+
+    .category-list {
+        display: flex;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 10px;
+    }
+
+    .category-button {
+        padding: 8px 12px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .video-info {
+        flex-direction: column;
+    }
+
+    .icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    .video-details h2 {
+        font-size: 1rem;
+    }
+}
+
 
     </style>
-    <title>Profile Dropdown</title>
-</head>
-<body>
-    <nav class="navbar">
-        <img src="logo.jpg" class="navbar-logo" alt="logo" />
+      <nav class="navbar">
+        <img src="logo.jpeg" class="navbar-logo" alt="logo" />
         <ul class="navbar-list">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Playlists</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="logout.php">Logout</a> </li>
+            <li>Greatest Of All Technology</li>
         </ul>
 
         <div class="profile-dropdown">
-            <div onclick="toggle()" class="profile-dropdown-btn">
+            <div onclick="toggleDropdown()" class="profile-dropdown-btn">
                 <div class="profile-img" id="profileImage">
                     <!-- JavaScript will dynamically add the first letter here -->
                 </div>
-                <span><?php echo $username; ?> <i class="fa-solid fa-angle-down"></i></span>
+                <span><?php echo $username; ?> <i class="fas fa-angle-down"></i></span>
             </div>
 
             <ul class="profile-dropdown-list">
-                <li class="profile-dropdown-list-item">
-                    <a href="#">
-                        <i class="fa-regular fa-user"></i>
-                        Edit Profile
-                    </a>
-                </li>
-                <li class="profile-dropdown-list-item">
-                    <a href="#">
-                        <i class="fa-regular fa-envelope"></i>
-                        Inbox
-                    </a>
-                </li>
-                <li class="profile-dropdown-list-item">
-                    <a href="#">
-                        <i class="fa-solid fa-chart-line"></i>
-                        Analytics
-                    </a>
-                </li>
-                <li class="profile-dropdown-list-item">
-                    <a href="#">
-                        <i class="fa-solid fa-sliders"></i>
-                        Settings
-                    </a>
-                </li>
                 <hr />
                 <li class="profile-dropdown-list-item">
                     <a href="logout.php">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <i class="fas fa-sign-out-alt"></i>
                         Log out
                     </a>
                 </li>
             </ul>
         </div>
+
     </nav>
 
-    <!-- Centered Welcome Text -->
-    <div class="welcome-text">Welcome, <?php echo $username; ?>!</div>
+
+    <div class="content-wrapper">
+        <!-- Category List -->
+        <div class="category-list">
+          <button class="category-button active">All</button>
+          <button class="category-button">Website</button>
+          <button class="category-button">Music</button>
+          <button class="category-button">Gaming</button>
+          <button class="category-button">Node.js</button>
+          <button class="category-button">JavaScript</button>
+          <button class="category-button">React.js</button>
+          <button class="category-button">TypeScript</button>
+          <button class="category-button">Coding</button>
+          <button class="category-button">Next.js</button>
+          <button class="category-button">Data analysis</button>
+          <button class="category-button">Web design</button>
+          <button class="category-button">HTML</button>
+          <button class="category-button">Tailwind</button>
+          <button class="category-button">CSS</button>
+          <button class="category-button">Express.js</button>
+        </div>
+        
+        <!-- Video List -->
+        <div class="video-list">
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">10:03</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">27K Views • 4 months ago</p>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">23:45</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">42K Views • 1 year ago</p>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">29:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">30:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">35:83</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">7:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">8:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">16:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">13:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="video-card">
+            <div class="thumbnail-container">
+              <img src="logo2.jpg" alt="Video Thumbnail" class="thumbnail">
+              <p class="duration">29:43</p>
+            </div>
+            <div class="video-info">
+              <img src="logo2.jpeg" alt="Channel Logo" class="icon">
+              <div class="video-details">
+                <h2 class="title">Greatest Of All Technology</h2>
+                <p class="channel-name">G.O.A.T</p>
+                <p class="views">68K Views • 9 months ago</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
 
     <script>
         function toggle() {
@@ -285,5 +547,13 @@ if (isset($_SESSION["username"])) {
             profileImage.textContent = initial;
         });
     </script>
+
+
+<script>
+   function toggleDropdown() {
+    document.querySelector('.profile-dropdown-list').classList.toggle('active');
+}
+
+</script>
 </body>
 </html>
